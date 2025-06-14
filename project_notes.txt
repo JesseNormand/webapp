@@ -1,0 +1,6 @@
+> Create a ticket using endpoint with parameters:
+ http://localhost:8080/ticket/put?id=1&title=TestBug&type=bug&priority=2&description=Critical issue&error=500
+
+> Retrieve the ticket using endpoint:
+http://localhost:8080/ticket/get?id=1
+
