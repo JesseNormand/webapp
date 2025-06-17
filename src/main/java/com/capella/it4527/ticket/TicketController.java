@@ -13,7 +13,7 @@ import java.io.IOException;
 @RestController
 public class TicketController {
 
-    // Save a basic ticket
+    // create a ticket
     @RequestMapping("/ticket/put")
     public String createTicket(@RequestParam int id, @RequestParam String title) {
         Ticket ticket = new Ticket(id, title, "basic", 1, "Open");
@@ -27,11 +27,11 @@ public class TicketController {
         return "Ticket saved as: " + id + ".txt";
     }
 
-    // Retrieve ticket text from a file
+    // Retrieve ticket text from saved txt file
     @RequestMapping("/ticket/get")
     public String getTicket(@RequestParam int id) {
         try (BufferedReader reader = new BufferedReader(new FileReader(id + ".txt"))) {
-            return reader.readLine(); // return just the first line of the file
+            return reader.readLine(); 
         } catch (IOException e) {
             return "Failed to load ticket.";
         }

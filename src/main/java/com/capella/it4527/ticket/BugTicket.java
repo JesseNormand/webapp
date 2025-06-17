@@ -4,7 +4,7 @@ public class BugTicket extends Ticket {
     private String description;
     private int error;
 
-    // Constructor (Sets type automatically to "bug")
+    // set ticket type to "bug"
     public BugTicket(int id, String title, int priority, String status, String description, int error) {
         super(id, title, "bug", priority, status);
         this.description = description;

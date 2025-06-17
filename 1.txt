@@ -1,1 +1,1 @@
-Ticket [id=1, title=TestBug, type=bug, priority=2, status=Open], Description: Critical issue, Error Code: 500
+Ticket [id=1, title=TestBug, type=basic, priority=1, status=Open]

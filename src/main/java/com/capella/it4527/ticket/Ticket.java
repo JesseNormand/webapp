@@ -28,7 +28,7 @@ public class Ticket {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    // Convert Ticket to a string representation
+    // Convert Ticket to a string 
     @Override
     public String toString() {
         return "Ticket [id=" + id + ", title=" + title + ", type=" + type + 

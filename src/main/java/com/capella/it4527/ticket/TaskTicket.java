@@ -3,8 +3,8 @@ package com.capella.it4527.ticket;
 public class TaskTicket extends Ticket {
     private String task;
 
-    // Constructor (Sets type automatically to "task")
-    public TaskTicket(int id, String title, int priority, String status, String task) {
+    // set type to "task"
+    public TaskTickets(int id, String title, int priority, String status, String task) {
         super(id, title, "task", priority, status);
         this.task = task;
     }
