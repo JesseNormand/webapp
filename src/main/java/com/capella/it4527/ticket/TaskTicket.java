@@ -1,10 +1,11 @@
 package com.capella.it4527.ticket;
 
+// This class extends the abstract Ticket base class
 public class TaskTicket extends Ticket {
     private String task;
 
     // set type to "task"
-    public TaskTickets(int id, String title, int priority, String status, String task) {
+    public TaskTicket(int id, String title, int priority, String status, String task) {
         super(id, title, "task", priority, status);
         this.task = task;
     }

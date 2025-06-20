@@ -1,1 +1,0 @@
-Ticket [id=1, title=TestBug, type=basic, priority=1, status=Open]

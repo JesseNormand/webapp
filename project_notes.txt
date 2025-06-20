@@ -7,4 +7,18 @@ http://localhost:8080/ticket/get?id=1
 > run application
 mvn spring-boot:run
 
+> command to manually delete file using cmd prompt. This solves the Faild to clean project error when running mvn clean verify
+rd /s /q "C:\Users\norma\OneDrive\Documents\it4527\it4527\target"
+
+
+> Assessment 3 changes to TicketController:
+Change RequestMapping to method-specific annotations &mdash; You've correctly used @PostMapping, @GetMapping, and @DeleteMapping.
+
+Accept a single @RequestBody parameter instead of multiple @RequestParams in createTicket() &mdash; Your createTicket() method now takes Ticket ticket as input and relies on Jackson for deserialization.
+
+Use polymorphic deserialization &mdash; Assuming you've already annotated the Ticket class with @JsonTypeInfo and @JsonSubTypes, your controller is now correctly set up to deserialize into BugTicket or TaskTicket.
+
+Write ticket content to a file &mdash; You’ve preserved this functionality using FileWriter.
+
+Add a /ticket/delete endpoint &mdash; You've correctly added @DeleteMapping("/ticket/delete"), checked if the file exists, attempted to delete it, and returned the file name or an empty string.
 

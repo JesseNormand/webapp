@@ -1,0 +1,1 @@
+Ticket [id=2, title=Test this bug task, type=bug, priority=2, status=Open], Description: null, Error Code: 0

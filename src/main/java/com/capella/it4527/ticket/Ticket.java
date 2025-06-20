@@ -1,11 +1,24 @@
 package com.capella.it4527.ticket;
 
-public class Ticket {
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+// Annotation added to enable polymorphic deserialization based on the "type" field
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = TaskTicket.class, name = "task"),
+    @JsonSubTypes.Type(value = BugTicket.class, name = "bug")
+})
+
+// Change class to abstract so it can't be directly instantiated
+public abstract class Ticket {
     private int id;
     private String title;
     private String type;
     private int priority;
     private String status;
+
+
 
     // Constructor
     public Ticket(int id, String title, String type, int priority, String status) {
