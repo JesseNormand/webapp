@@ -3,15 +3,32 @@ package com.capella.it4527.ticket;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Entity;
+
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Id;
+
+
+
+
 // Annotation added to enable polymorphic deserialization based on the "type" field
+@Entity
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = TaskTicket.class, name = "task"),
     @JsonSubTypes.Type(value = BugTicket.class, name = "bug")
 })
 
+// Adding annotation for interface with JPA
+
+@DiscriminatorColumn(name = "type")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+
 // Change class to abstract so it can't be directly instantiated
 public abstract class Ticket {
+    @Id
     private int id;
     private String title;
     private String type;
@@ -45,7 +62,7 @@ public abstract class Ticket {
     @Override
     public String toString() {
         return "Ticket [id=" + id + ", title=" + title + ", type=" + type + 
-               ", priority=" + priority + ", status=" + status + "]";
+        ", priority=" + priority + ", status=" + status + "]";
     }
 }
 
