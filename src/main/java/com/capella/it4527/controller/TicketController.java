@@ -17,13 +17,13 @@ import java.io.IOException;
 @RestController
 public class TicketController {
 
-    // ✅ Injecting the repository to access the database
+    // Injecting the repository to access the database
     @Autowired
     private TicketRepository ticketRepository;
 
-    // ✅ Changed from multiple @RequestParam to a single @RequestBody argument
+    // Changed from multiple @RequestParam to a single @RequestBody argument
     // Jackson will use polymorphic deserialization based on "type"
-    // ✅ Saves the ticket to the database instead of a file
+    // Saves the ticket to the database instead of a file
     @PostMapping("/ticket/put")
     public String createTicket(@RequestBody Ticket ticket) {
         ticketRepository.save(ticket);
@@ -32,7 +32,7 @@ public class TicketController {
 
 
 
-     // ✅ Retrieves ticket by ID from the database
+     // etrieves ticket by ID from the database
     @GetMapping("/ticket/get")
     public Ticket getTicket(@RequestParam int id) {
         Optional<Ticket> result = ticketRepository.findById(id);
@@ -50,10 +50,22 @@ public class TicketController {
     }
 
 
-     // ✅ New method: Retrieves all tickets by type
+     // New method: Retrieves all tickets by type
     @GetMapping("/ticket/getbytype")
     public List<Ticket> getTicketByType(@RequestParam String type) {
         return ticketRepository.findByType(type);
     }
+
+
+    @PutMapping("/ticket/updatestatus")
+    public int putTicketStatus(@RequestParam String status, @RequestBody List<Integer> ticketIds) {
+
+        List<Ticket> tickets = (List<Ticket>) ticketRepository.findAllById(ticketIds);
+        tickets.forEach(ticket -> ticket.setStatus(status)); // lamda function 
+        ticketRepository.saveAll(tickets);
+        
+        return tickets.size();
+    }
+
 
 }

@@ -29,11 +29,11 @@ import jakarta.persistence.Id;
 // Change class to abstract so it can't be directly instantiated
 public abstract class Ticket {
     @Id
-    private int id;
-    private String title;
-    private String type;
-    private int priority;
-    private String status;
+    protected int id;
+    protected String title;
+    protected String type;
+    protected int priority;
+    protected String status;
 
 
 
@@ -44,6 +44,10 @@ public abstract class Ticket {
         this.type = type;
         this.priority = priority;
         this.status = status;
+    }
+
+    protected Ticket() {
+    // Required by JPA
     }
 
     // Getters and Setters

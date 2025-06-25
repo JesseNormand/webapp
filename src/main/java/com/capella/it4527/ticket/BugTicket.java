@@ -1,5 +1,10 @@
 package com.capella.it4527.ticket;
 
+import jakarta.persistence.Entity;
+
+// marks them as database-mapped entity tables
+@Entity
+
 public class BugTicket extends Ticket {
     private String description;
     private int error;
@@ -10,6 +15,13 @@ public class BugTicket extends Ticket {
         this.description = description;
         this.error = error;
     }
+
+    public BugTicket() {
+    super(0, "", "bug", 0, "Open");
+    this.description = "";
+    this.error = 0;
+    }
+
 
     // Getters and Setters
     public String getDescription() { return description; }
