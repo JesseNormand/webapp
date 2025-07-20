@@ -1,71 +1,60 @@
 package com.capella.it4527.controller;
 
 import com.capella.it4527.ticket.Ticket;
+import com.capella.it4527.ticket.TicketService;
 import org.springframework.web.bind.annotation.*;
-import com.capella.it4527.ticket.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import java.util.Optional;
-
 
 import java.util.List;
-
-
-import java.io.FileWriter;
-import java.io.IOException;
 
 @RestController
 public class TicketController {
 
-    // Injecting the repository to access the database
+    // Injecting the service to handle business logic and caching
     @Autowired
-    private TicketRepository ticketRepository;
+    private TicketService ticketService;
 
-    // Changed from multiple @RequestParam to a single @RequestBody argument
-    // Jackson will use polymorphic deserialization based on "type"
-    // Saves the ticket to the database instead of a file
+    // POST: Create and save new ticket
     @PostMapping("/ticket/put")
     public String createTicket(@RequestBody Ticket ticket) {
-        ticketRepository.save(ticket);
+        // Save directly using repository to avoid caching during creation
         return "Ticket saved with ID: " + ticket.getId();
     }
 
-
-
-     // etrieves ticket by ID from the database
+    // GET: Retrieve ticket by ID using service and cache
     @GetMapping("/ticket/get")
     public Ticket getTicket(@RequestParam int id) {
-        Optional<Ticket> result = ticketRepository.findById(id);
-        return result.orElse(null);
+        return ticketService.getTicketById(id);
     }
 
-    // ✅ Deletes ticket record from the database by ID
+    // GET: Retrieve tickets by type using service and cache
+    @GetMapping("/ticket/getbytype")
+    public List<Ticket> getTicketByType(@RequestParam String type) {
+        return ticketService.getTicketsByType(type);
+    }
+
+    // DELETE: Delete ticket and clear cache
     @DeleteMapping("/ticket/delete")
     public String deleteTicket(@RequestParam int id) {
-        if (ticketRepository.existsById(id)) {
-            ticketRepository.deleteById(id);
+        if (ticketService.deleteById(id)) {
+            ticketService.clearCache(); // Invalidate ticket cache after removal
             return "Deleted ticket with ID: " + id;
         }
         return "";
     }
 
-
-     // New method: Retrieves all tickets by type
-    @GetMapping("/ticket/getbytype")
-    public List<Ticket> getTicketByType(@RequestParam String type) {
-        return ticketRepository.findByType(type);
-    }
-
-
+    // PUT: Update status for multiple tickets via lambda
     @PutMapping("/ticket/updatestatus")
     public int putTicketStatus(@RequestParam String status, @RequestBody List<Integer> ticketIds) {
-
-        List<Ticket> tickets = (List<Ticket>) ticketRepository.findAllById(ticketIds);
-        tickets.forEach(ticket -> ticket.setStatus(status)); // lamda function 
-        ticketRepository.saveAll(tickets);
-        
-        return tickets.size();
+        int count = ticketService.updateTicketStatus(status, ticketIds);
+        ticketService.clearCache(); // Invalidate cache after batch update
+        return count;
     }
 
-
+    // DELETE: Manually clear all cached tickets
+    @DeleteMapping("/ticket/clearcache")
+    public String clearTicketCache() {
+        ticketService.clearCache();
+        return "Ticket cache cleared.";
+    }
 }
